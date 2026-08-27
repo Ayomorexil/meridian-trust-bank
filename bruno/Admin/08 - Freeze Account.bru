@@ -1,0 +1,21 @@
+meta {
+  name: 08 - Freeze Account
+  type: http
+  seq: 8
+}
+
+patch {
+  url: {{baseUrl}}/admin/accounts/{{memberAccountId}}/freeze
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+body:json {
+  {
+    "reason": "Bruno test — fraud review"
+  }
+}

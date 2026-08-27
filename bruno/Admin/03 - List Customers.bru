@@ -1,0 +1,26 @@
+meta {
+  name: 03 - List Customers
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/admin/customers?search=Priya
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+script:post-response {
+  const customers = res.body?.data?.customers || [];
+  if (customers[0]) bru.setEnvVar("customerId", customers[0].id);
+}
+
+docs {
+  Searches for "Priya" (the seeded customer with a pending external
+  transfer) and captures her id into {{customerId}} for the requests
+  below. Drop the ?search= query param to list everyone.
+}

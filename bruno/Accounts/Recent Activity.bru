@@ -1,0 +1,15 @@
+meta {
+  name: Recent Activity (All Accounts)
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/accounts/activity/recent?limit=10
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{memberToken}}
+}

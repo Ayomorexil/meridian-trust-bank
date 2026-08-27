@@ -1,0 +1,21 @@
+meta {
+  name: 09 - Unfreeze Account
+  type: http
+  seq: 9
+}
+
+patch {
+  url: {{baseUrl}}/admin/accounts/{{memberAccountId}}/unfreeze
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+body:json {
+  {
+    "reason": "Bruno test — review cleared"
+  }
+}

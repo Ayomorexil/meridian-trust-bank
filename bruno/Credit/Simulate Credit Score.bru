@@ -1,0 +1,25 @@
+meta {
+  name: Simulate Credit Score
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/credit/simulate
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{memberToken}}
+}
+
+body:json {
+  {
+    "scenario": "payoff_credit_card"
+  }
+}
+
+docs {
+  scenario options: "payoff_credit_card" | "lower_utilization" | "on_time_payments_6mo"
+}

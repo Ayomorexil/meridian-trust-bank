@@ -1,0 +1,29 @@
+meta {
+  name: 07 - Adjust Balance (Credit)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/admin/accounts/{{memberAccountId}}/adjust
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+body:json {
+  {
+    "amount": 50.00,
+    "direction": "credit",
+    "reason": "Bruno test — goodwill credit"
+  }
+}
+
+docs {
+  Uses {{memberAccountId}} — run "List My Accounts" (as the member)
+  first so that variable is populated. Reason is required and always
+  written to the audit log.
+}

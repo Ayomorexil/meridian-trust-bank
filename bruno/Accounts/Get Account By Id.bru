@@ -1,0 +1,15 @@
+meta {
+  name: Get Account By Id
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/accounts/{{memberAccountId}}
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{memberToken}}
+}

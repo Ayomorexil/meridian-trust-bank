@@ -1,0 +1,20 @@
+meta {
+  name: Cancel My Transfer
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/transfers/{{transferId}}/cancel
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{memberToken}}
+}
+
+docs {
+  Only works while the transfer is still "pending" or "scheduled".
+  Releases the hold on the source account's available balance.
+}

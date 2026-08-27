@@ -1,0 +1,31 @@
+meta {
+  name: 01 - Login (Admin)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "admin@meridiantrust.demo",
+    "password": "Admin!2345"
+  }
+}
+
+script:post-response {
+  if (res.body.token) {
+    bru.setEnvVar("adminToken", res.body.token);
+  }
+}
+
+docs {
+  Run this first for everything in the Admin folder. Saves the staff
+  JWT into {{adminToken}}. Use superadmin@meridiantrust.demo /
+  SuperAdmin!2345 instead if you want to test superadmin-only actions
+  (there currently aren't any gated tighter than "admin").
+}

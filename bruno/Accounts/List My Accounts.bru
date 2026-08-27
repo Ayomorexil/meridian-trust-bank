@@ -1,0 +1,29 @@
+meta {
+  name: List My Accounts
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/accounts
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{memberToken}}
+}
+
+script:post-response {
+  const accounts = res.body?.data?.accounts || [];
+  const checking = accounts.find(a => a.account_type === 'checking');
+  const savings = accounts.find(a => a.account_type === 'savings');
+  if (checking) bru.setEnvVar("memberAccountId", checking.id);
+  if (savings) bru.setEnvVar("destAccountId", savings.id);
+}
+
+docs {
+  Run after logging in. Captures the checking account id into
+  {{memberAccountId}} (used as the transfer source) and the savings
+  account id into {{destAccountId}} (used as the transfer destination).
+}

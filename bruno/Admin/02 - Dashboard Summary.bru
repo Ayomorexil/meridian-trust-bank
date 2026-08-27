@@ -1,0 +1,15 @@
+meta {
+  name: 02 - Dashboard Summary
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/admin/dashboard/summary
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}

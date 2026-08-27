@@ -1,0 +1,21 @@
+meta {
+  name: 13 - Hold Transfer
+  type: http
+  seq: 13
+}
+
+patch {
+  url: {{baseUrl}}/admin/transfers/{{transferId}}/hold
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+body:json {
+  {
+    "reason": "Bruno test — flagged for manual review"
+  }
+}

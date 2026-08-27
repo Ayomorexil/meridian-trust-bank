@@ -1,0 +1,21 @@
+meta {
+  name: 17 - List Audit Logs
+  type: http
+  seq: 17
+}
+
+get {
+  url: {{baseUrl}}/admin/audit-logs
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+docs {
+  Every action above (suspend, adjust, freeze, approve, reject, hold,
+  release, fail, reverse, KYC changes) writes an entry here with the
+  admin id, action, old/new value, and the reason you passed in.
+}

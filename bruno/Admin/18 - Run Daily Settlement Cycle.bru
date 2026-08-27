@@ -1,0 +1,23 @@
+meta {
+  name: 18 - Run Daily Settlement Cycle
+  type: http
+  seq: 18
+}
+
+post {
+  url: {{baseUrl}}/admin/simulate/run-daily-cycle
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+docs {
+  Accrues a randomized daily price move for every investment holding
+  (posting the gain/loss to the linked account) and processes any
+  recurring charges (bills/taxes/subscriptions) whose next_run_date has
+  arrived. Runs automatically every night at 00:05 via node-cron —
+  this lets you trigger it on demand for a demo instead of waiting.
+}

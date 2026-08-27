@@ -1,0 +1,21 @@
+meta {
+  name: 15 - Mark Transfer Failed
+  type: http
+  seq: 15
+}
+
+patch {
+  url: {{baseUrl}}/admin/transfers/{{transferId}}/fail
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+body:json {
+  {
+    "reason": "Bruno test — receiving bank unavailable"
+  }
+}

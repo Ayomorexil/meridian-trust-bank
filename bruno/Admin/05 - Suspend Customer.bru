@@ -1,0 +1,21 @@
+meta {
+  name: 05 - Suspend Customer
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/admin/customers/{{customerId}}/suspend
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+body:json {
+  {
+    "reason": "Bruno test — suspicious login pattern"
+  }
+}

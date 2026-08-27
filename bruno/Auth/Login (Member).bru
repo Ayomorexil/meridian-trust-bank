@@ -1,0 +1,29 @@
+meta {
+  name: Login (Member - Edward Etkinson)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "edward.etkinson@example.com",
+    "password": "Password!2345"
+  }
+}
+
+script:post-response {
+  if (res.body.token) {
+    bru.setEnvVar("memberToken", res.body.token);
+  }
+}
+
+docs {
+  Run this first. Saves the JWT into {{memberToken}} for every other
+  member-facing request in this collection.
+}

@@ -1,0 +1,6 @@
+{
+  "version": "1",
+  "name": "Meridian Trust API",
+  "type": "collection",
+  "ignore": ["node_modules", ".git"]
+}

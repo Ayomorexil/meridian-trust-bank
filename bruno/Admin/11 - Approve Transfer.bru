@@ -1,0 +1,21 @@
+meta {
+  name: 11 - Approve Transfer
+  type: http
+  seq: 11
+}
+
+patch {
+  url: {{baseUrl}}/admin/transfers/{{transferId}}/approve
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+body:json {
+  {
+    "reason": "Bruno test — approved after review"
+  }
+}

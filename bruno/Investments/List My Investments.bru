@@ -1,0 +1,15 @@
+meta {
+  name: List My Investments
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/investments
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{memberToken}}
+}

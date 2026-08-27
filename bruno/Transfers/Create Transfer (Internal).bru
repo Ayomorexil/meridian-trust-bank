@@ -1,0 +1,36 @@
+meta {
+  name: Create Transfer (Internal — instant)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/transfers
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{memberToken}}
+}
+
+body:json {
+  {
+    "fromAccountId": "{{memberAccountId}}",
+    "toAccountId": "{{destAccountId}}",
+    "amount": 25.00,
+    "memo": "Bruno test transfer"
+  }
+}
+
+script:post-response {
+  if (res.body?.data?.transfer) {
+    bru.setEnvVar("transferId", res.body.data.transfer.id);
+  }
+}
+
+docs {
+  Run "List My Accounts" first so {{memberAccountId}} / {{destAccountId}}
+  are populated. Internal transfers between the member's own accounts
+  complete instantly — status will already be "completed".
+}

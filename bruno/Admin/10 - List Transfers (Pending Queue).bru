@@ -1,0 +1,26 @@
+meta {
+  name: 10 - List Transfers (Pending Queue)
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/admin/transfers?status=pending
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+script:post-response {
+  const transfers = res.body?.data?.transfers || [];
+  if (transfers[0]) bru.setEnvVar("transferId", transfers[0].id);
+}
+
+docs {
+  Drop the ?status= param to see every transfer regardless of status.
+  Valid values: pending, processing, held, scheduled, completed,
+  declined, cancelled, failed, reversed.
+}

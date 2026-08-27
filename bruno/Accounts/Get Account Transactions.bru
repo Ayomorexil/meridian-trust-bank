@@ -1,0 +1,15 @@
+meta {
+  name: Get Account Transactions
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/accounts/{{memberAccountId}}/transactions?limit=10
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{memberToken}}
+}

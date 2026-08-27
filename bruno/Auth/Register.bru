@@ -1,0 +1,25 @@
+meta {
+  name: Register
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/register
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "fullName": "Test User",
+    "email": "test.user@example.com",
+    "password": "Password!2345",
+    "phone": "+1-914-555-0100"
+  }
+}
+
+docs {
+  Creates a new member. Automatically gets a checking + savings account
+  and a starter credit score record. Run once — will 409 on repeat.
+}

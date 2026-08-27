@@ -1,0 +1,27 @@
+meta {
+  name: 16 - Reverse Transfer
+  type: http
+  seq: 16
+}
+
+patch {
+  url: {{baseUrl}}/admin/transfers/{{transferId}}/reverse
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+body:json {
+  {
+    "reason": "Bruno test — duplicate transaction detected"
+  }
+}
+
+docs {
+  Only works on a transfer whose status is "completed" or "refunded".
+  Run the "Create Transfer (Internal)" request first to get a
+  completed transfer, then point {{transferId}} at it.
+}

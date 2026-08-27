@@ -1,0 +1,19 @@
+meta {
+  name: 14 - Release Transfer
+  type: http
+  seq: 14
+}
+
+patch {
+  url: {{baseUrl}}/admin/transfers/{{transferId}}/release
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{adminToken}}
+}
+
+docs {
+  Only works if the transfer's current status is "held".
+}

@@ -1,0 +1,15 @@
+meta {
+  name: List My Transfers
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/transfers
+  body: none
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{memberToken}}
+}

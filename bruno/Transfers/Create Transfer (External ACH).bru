@@ -1,0 +1,38 @@
+meta {
+  name: Create Transfer (External ACH — goes to admin queue)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/transfers
+  body: json
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{memberToken}}
+}
+
+body:json {
+  {
+    "fromAccountId": "{{memberAccountId}}",
+    "kind": "external_ach",
+    "externalLabel": "External Account (ACH)",
+    "amount": 150.00,
+    "memo": "Rent"
+  }
+}
+
+script:post-response {
+  if (res.body?.data?.transfer) {
+    bru.setEnvVar("transferId", res.body.data.transfer.id);
+  }
+}
+
+docs {
+  No toAccountId — this is an external transfer, so it lands as
+  "pending" and shows up in the admin Transfers approval queue.
+  Use this transferId with the Admin > Approve/Reject/Hold/Reverse
+  requests below.
+}
