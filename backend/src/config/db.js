@@ -47,4 +47,4 @@ db.one("SELECT NOW() AS now")
     console.error(err);
   });
 
-module.exports = db;
+module.exports = { db };
