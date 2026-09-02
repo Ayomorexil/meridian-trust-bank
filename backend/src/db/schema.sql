@@ -231,6 +231,19 @@ CREATE INDEX idx_price_ticks_holding_id ON investment_price_ticks(holding_id);
 -- RECURRING DEBITS  (subscriptions, utility bills, simulated tax withdrawals)
 -- ============================================================
 CREATE TYPE recurring_frequency AS ENUM ('weekly', 'monthly', 'quarterly', 'annually');
+
+CREATE TABLE recurring_charges (
+    id              UUID PRIMARY KEY DEFAULT gen_random_uuid(),                                                         
+    user_id         UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    account_id      UUID NOT NULL REFERENCES accounts(id) ON DELETE CASCADE,
+    payee_name      VARCHAR(100) NOT NULL,
+    category        VARCHAR(40) NOT NULL DEFAULT 'other',
+    amount          NUMERIC(14, 2) NOT NULL CHECK (amount > 0),
+    frequency       recurring_frequency NOT NULL DEFAULT 'monthly',
+    next_run_date   DATE NOT NULL,
+    active          BOOLEAN NOT NULL DEFAULT true,
+    created_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 CREATE TYPE recurring_category AS ENUM ('subscription', 'utility', 'tax', 'insurance', 'loan_payment', 'other');
 
 CREATE TABLE recurring_debits (
