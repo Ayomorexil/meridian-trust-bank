@@ -15,6 +15,7 @@ const investmentRoutes = require("./routes/investmentRoutes");
 const billRoutes = require("./routes/billRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -39,6 +40,7 @@ app.use("/api/investments", investmentRoutes);
 app.use("/api/bills", billRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/chat", chatRoutes);
 
 app.all("*", (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} on this server.`, 404));
