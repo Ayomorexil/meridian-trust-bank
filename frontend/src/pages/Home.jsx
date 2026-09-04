@@ -1,17 +1,17 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Topbar from '../components/Topbar';
-import BottomNav from '../components/BottomNav';
-import Toast from '../components/Toast';
-import AccountCard from '../components/AccountCard';
-import TxnItem from '../components/TxnItem';
-import Shell from '../components/Shell';
-import DepositModal from '../components/DepositModal';
-import PayBillsModal from '../components/PayBillsModal';
-import NotificationsModal from '../components/NotificationsModal';
-import { useAuthStore } from '../store/useAuthStore';
-import { useBankStore } from '../store/useBankStore';
-import { bankService } from '../api/bank';
+import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Topbar from "../components/Topbar";
+import BottomNav from "../components/BottomNav";
+import Toast from "../components/Toast";
+import AccountCard from "../components/AccountCard";
+import TxnItem from "../components/TxnItem";
+import Shell from "../components/Shell";
+import DepositModal from "../components/DepositModal";
+import PayBillsModal from "../components/PayBillsModal";
+import NotificationsModal from "../components/NotificationsModal";
+import { useAuthStore } from "../store/useAuthStore";
+import { useBankStore } from "../store/useBankStore";
+import { bankService } from "../api/bank";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -48,35 +48,33 @@ export default function Home() {
       accounts.reduce(
         (sum, account) =>
           sum +
-          (account.account_type === 'credit'
+          (account.account_type === "credit"
             ? 0
             : Number(account.available_balance || 0)),
-        0
+        0,
       ),
-    [accounts]
+    [accounts],
   );
 
   const monthlySpend = useMemo(
     () =>
       transactions
-        .filter((transaction) => transaction.direction === 'debit')
+        .filter((transaction) => transaction.direction === "debit")
         .reduce((sum, transaction) => sum + Number(transaction.amount), 0),
-    [transactions]
+    [transactions],
   );
 
   const checkingAccount = accounts.find(
-    (account) => account.account_type === 'checking'
+    (account) => account.account_type === "checking",
   );
 
   const daysUntil = (dateStr) => {
-    if (!dateStr) return '';
+    if (!dateStr) return "";
 
-    const days = Math.ceil(
-      (new Date(dateStr) - new Date()) / 86400000
-    );
+    const days = Math.ceil((new Date(dateStr) - new Date()) / 86400000);
 
-    if (days <= 0) return 'Due today';
-    if (days === 1) return 'Due tomorrow';
+    if (days <= 0) return "Due today";
+    if (days === 1) return "Due tomorrow";
 
     return `Due in ${days} days`;
   };
@@ -92,11 +90,11 @@ export default function Home() {
         <div className="relative z-10 flex items-center justify-between">
           <div>
             <div className="text-[12px] font-medium text-white/60">
-              Good morning 👋
+              Welcome back,
             </div>
 
             <div className="text-[17px] font-extrabold text-white">
-              {user?.fullName || 'Member'}
+              {user?.fullName || "Member"}
             </div>
           </div>
 
@@ -117,7 +115,7 @@ export default function Home() {
 
           <div className="my-1 text-[42px] font-extrabold tracking-tighter text-white">
             $
-            {totalBalance.toLocaleString('en-US', {
+            {totalBalance.toLocaleString("en-US", {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
             })}
@@ -134,7 +132,7 @@ export default function Home() {
             onClick={() =>
               checkingAccount
                 ? setShowDeposit(true)
-                : showToast('No checking account found.')
+                : showToast("No checking account found.")
             }
             className="flex-1 rounded-full bg-white py-3 text-center text-[13px] font-extrabold text-navy shadow-md2 transition-transform active:scale-95"
           >
@@ -143,7 +141,7 @@ export default function Home() {
 
           <button
             type="button"
-            onClick={() => navigate('/transfer')}
+            onClick={() => navigate("/transfer")}
             className="flex-1 rounded-full border border-white/25 bg-white/15 py-3 text-center text-[13px] font-extrabold text-white transition-colors hover:bg-white/25 active:scale-95"
           >
             ⇅ &nbsp;Transfer
@@ -151,9 +149,7 @@ export default function Home() {
 
           <button
             type="button"
-            onClick={() =>
-              accounts.length ? setShowPayBills(true) : null
-            }
+            onClick={() => (accounts.length ? setShowPayBills(true) : null)}
             className="flex-1 rounded-full border border-white/25 bg-white/15 py-3 text-center text-[13px] font-extrabold text-white transition-colors hover:bg-white/25 active:scale-95"
           >
             💳 &nbsp;Pay Bills
@@ -169,7 +165,7 @@ export default function Home() {
             </div>
 
             <div className="mt-1 text-2xl font-extrabold text-good">
-              {creditScore?.value ?? '—'}
+              {creditScore?.value ?? "—"}
             </div>
 
             <div className="mt-[3px] text-[11px] font-bold text-good">
@@ -184,7 +180,7 @@ export default function Home() {
 
             <div className="mt-1 text-2xl font-extrabold text-ink">
               $
-              {monthlySpend.toLocaleString('en-US', {
+              {monthlySpend.toLocaleString("en-US", {
                 maximumFractionDigits: 0,
               })}
             </div>
@@ -196,12 +192,10 @@ export default function Home() {
         </div>
 
         <div className="flex items-center justify-between px-[18px] pb-2.5 pt-4">
-          <span className="text-[15px] font-bold text-ink">
-            My Cards
-          </span>
+          <span className="text-[15px] font-bold text-ink">My Cards</span>
 
           <span
-            onClick={() => navigate('/accounts')}
+            onClick={() => navigate("/accounts")}
             className="cursor-pointer text-xs font-bold text-blue-mid"
           >
             + Add
@@ -213,7 +207,7 @@ export default function Home() {
             <AccountCard
               key={account.id}
               account={account}
-              onClick={() => navigate('/accounts')}
+              onClick={() => navigate("/accounts")}
             />
           ))}
         </div>
@@ -226,8 +220,7 @@ export default function Home() {
               </div>
 
               <div className="text-sm font-extrabold text-[#6B2200]">
-                {nextBill.payee} · $
-                {Number(nextBill.amount).toFixed(2)}
+                {nextBill.payee} · ${Number(nextBill.amount).toFixed(2)}
               </div>
 
               <div className="text-[11px] text-[#A83800]">
@@ -290,9 +283,7 @@ export default function Home() {
       )}
 
       {showNotifications && (
-        <NotificationsModal
-          onClose={() => setShowNotifications(false)}
-        />
+        <NotificationsModal onClose={() => setShowNotifications(false)} />
       )}
     </Shell>
   );
