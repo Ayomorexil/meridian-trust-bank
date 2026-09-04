@@ -5,6 +5,7 @@ import BottomNav from "../components/BottomNav";
 import Shell from "../components/Shell";
 import DepositModal from "../components/DepositModal";
 import PayBillsModal from "../components/PayBillsModal";
+import LiveChat from "../components/LiveChat";
 import { useAuthStore } from "../store/useAuthStore";
 import { useBankStore } from "../store/useBankStore";
 
@@ -36,6 +37,7 @@ export default function More() {
 
   const [showDeposit, setShowDeposit] = useState(false);
   const [showPayBills, setShowPayBills] = useState(false);
+  const [showLiveChat, setShowLiveChat] = useState(false);
 
   useEffect(() => {
     if (accounts.length === 0) {
@@ -130,7 +132,7 @@ export default function More() {
           items={[
             {
               label: "Live Chat",
-              onClick: notAvailable("Live Chat"),
+              onClick: () => setShowLiveChat(true),
             },
             {
               label: "Call 1-916-980-2104",
@@ -181,6 +183,8 @@ export default function More() {
           onClose={() => setShowPayBills(false)}
         />
       )}
+
+      {showLiveChat && <LiveChat onClose={() => setShowLiveChat(false)} />}
     </Shell>
   );
 }
