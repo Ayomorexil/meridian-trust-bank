@@ -1,29 +1,29 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Topbar from '../components/Topbar';
-import BottomNav from '../components/BottomNav';
-import Shell from '../components/Shell';
-import DepositModal from '../components/DepositModal';
-import PayBillsModal from '../components/PayBillsModal';
-import { useAuthStore } from '../store/useAuthStore';
-import { useBankStore } from '../store/useBankStore';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Topbar from "../components/Topbar";
+import BottomNav from "../components/BottomNav";
+import Shell from "../components/Shell";
+import DepositModal from "../components/DepositModal";
+import PayBillsModal from "../components/PayBillsModal";
+import { useAuthStore } from "../store/useAuthStore";
+import { useBankStore } from "../store/useBankStore";
 
 const KYC_LABELS = {
   verified: {
-    text: '✓ Verified member',
-    className: 'text-good',
+    text: "✓ Verified member",
+    className: "text-good",
   },
   pending: {
-    text: '⏳ Verification pending',
-    className: 'text-amber-600',
+    text: "⏳ Verification pending",
+    className: "text-amber-600",
   },
   rejected: {
-    text: '⚠ Verification rejected — contact support',
-    className: 'text-danger',
+    text: "⚠ Verification rejected — contact support",
+    className: "text-danger",
   },
   unverified: {
-    text: 'Not yet verified',
-    className: 'text-muted',
+    text: "Not yet verified",
+    className: "text-muted",
   },
 };
 
@@ -32,11 +32,7 @@ export default function More() {
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
 
-  const {
-    accounts,
-    fetchAccounts,
-    showToast,
-  } = useBankStore();
+  const { accounts, fetchAccounts, showToast } = useBankStore();
 
   const [showDeposit, setShowDeposit] = useState(false);
   const [showPayBills, setShowPayBills] = useState(false);
@@ -48,11 +44,10 @@ export default function More() {
   }, [accounts.length, fetchAccounts]);
 
   const checkingAccount = accounts.find(
-    (account) => account.account_type === 'checking'
+    (account) => account.account_type === "checking",
   );
 
-  const kyc =
-    KYC_LABELS[user?.kycStatus] || KYC_LABELS.unverified;
+  const kyc = KYC_LABELS[user?.kycStatus] || KYC_LABELS.unverified;
 
   const notAvailable = (label) => () => {
     showToast(`${label} is currently unavailable.`);
@@ -60,7 +55,7 @@ export default function More() {
 
   const handleSignOut = () => {
     logout();
-    navigate('/login');
+    navigate("/login");
   };
 
   return (
@@ -70,21 +65,19 @@ export default function More() {
       <div className="no-scrollbar flex-1 overflow-y-auto p-4">
         <div className="flex items-center gap-3.5 rounded-lg2 border border-line bg-surface p-[18px] shadow-sm2">
           <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-navy to-blue-mid text-xl font-extrabold text-white">
-            {user?.avatarInitials || '••'}
+            {user?.avatarInitials || "••"}
           </div>
 
           <div>
             <div className="text-base font-extrabold text-ink">
-              {user?.fullName || 'Member'}
+              {user?.fullName || "Member"}
             </div>
 
             <div className="mt-0.5 text-xs text-muted">
-              {user?.memberNumber || 'MT-0000-0000'}
+              {user?.memberNumber || "MT-0000-0000"}
             </div>
 
-            <div
-              className={`mt-1 text-[11px] font-bold ${kyc.className}`}
-            >
+            <div className={`mt-1 text-[11px] font-bold ${kyc.className}`}>
               {kyc.text}
             </div>
           </div>
@@ -95,38 +88,38 @@ export default function More() {
         <MenuCard
           items={[
             {
-              label: 'Investment Portfolio',
-              onClick: () => navigate('/investments'),
+              label: "Investment Portfolio",
+              onClick: () => navigate("/investments"),
             },
             {
-              label: 'Analytics',
-              onClick: () => navigate('/analytics'),
+              label: "Analytics",
+              onClick: () => navigate("/analytics"),
             },
             {
-              label: 'Pay Bills',
+              label: "Pay Bills",
               onClick: () =>
                 accounts.length
                   ? setShowPayBills(true)
-                  : notAvailable('Pay Bills')(),
+                  : notAvailable("Pay Bills")(),
             },
             {
-              label: 'Mobile Check Deposit',
+              label: "Mobile Check Deposit",
               onClick: () =>
                 checkingAccount
                   ? setShowDeposit(true)
-                  : notAvailable('Mobile Check Deposit')(),
+                  : notAvailable("Mobile Check Deposit")(),
             },
             {
-              label: 'Statements & Notices',
-              onClick: () => navigate('/accounts'),
+              label: "Statements & Notices",
+              onClick: () => navigate("/accounts"),
             },
             {
-              label: 'Card Management',
-              onClick: notAvailable('Card Management'),
+              label: "Card Management",
+              onClick: notAvailable("Card Management"),
             },
             {
-              label: 'Branch Finder',
-              onClick: notAvailable('Branch Finder'),
+              label: "Branch Finder",
+              onClick: notAvailable("Branch Finder"),
             },
           ]}
         />
@@ -136,24 +129,24 @@ export default function More() {
         <MenuCard
           items={[
             {
-              label: 'Live Chat',
-              onClick: notAvailable('Live Chat'),
+              label: "Live Chat",
+              onClick: notAvailable("Live Chat"),
             },
             {
-              label: 'Call 1-800-555-0134',
-              onClick: notAvailable('Phone support'),
+              label: "Call 1-916-980-2104",
+              onClick: notAvailable("Phone support"),
             },
             {
-              label: 'Security Settings',
-              onClick: notAvailable('Security Settings'),
+              label: "Security Settings",
+              onClick: notAvailable("Security Settings"),
             },
             {
-              label: 'Notification Preferences',
-              onClick: notAvailable('Notification Preferences'),
+              label: "Notification Preferences",
+              onClick: notAvailable("Notification Preferences"),
             },
             {
-              label: 'Account Settings',
-              onClick: notAvailable('Account Settings'),
+              label: "Account Settings",
+              onClick: notAvailable("Account Settings"),
             },
           ]}
         />
@@ -208,9 +201,7 @@ function MenuCard({ items }) {
           key={item.label}
           onClick={item.onClick}
           className={`flex cursor-pointer items-center justify-between px-[18px] py-[15px] text-sm font-semibold text-ink hover:bg-bg ${
-            index !== items.length - 1
-              ? 'border-b border-line'
-              : ''
+            index !== items.length - 1 ? "border-b border-line" : ""
           }`}
         >
           {item.label}
