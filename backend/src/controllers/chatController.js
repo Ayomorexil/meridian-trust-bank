@@ -7,7 +7,8 @@ exports.getOrCreateConversation = catchAsync(async (req, res) => {
   let conversation = await db.oneOrNone(
     `SELECT *
      FROM chat_conversations
-     WHERE user_id = $1 AND status = 'open'
+     WHERE user_id = $1
+       AND status = 'open'
      ORDER BY created_at DESC
      LIMIT 1`,
     [req.user.id],
@@ -24,7 +25,9 @@ exports.getOrCreateConversation = catchAsync(async (req, res) => {
 
   res.status(200).json({
     status: "success",
-    data: { conversation },
+    data: {
+      conversation,
+    },
   });
 });
 
@@ -33,7 +36,8 @@ exports.getMessages = catchAsync(async (req, res, next) => {
   const conversation = await db.oneOrNone(
     `SELECT id
      FROM chat_conversations
-     WHERE id = $1 AND user_id = $2`,
+     WHERE id = $1
+       AND user_id = $2`,
     [req.params.conversationId, req.user.id],
   );
 
@@ -49,10 +53,10 @@ exports.getMessages = catchAsync(async (req, res, next) => {
        m.message,
        m.created_at,
        m.read_at,
-       u.first_name,
-       u.last_name
+       u.full_name
      FROM chat_messages m
-     JOIN users u ON u.id = m.sender_id
+     JOIN users u
+       ON u.id = m.sender_id
      WHERE m.conversation_id = $1
      ORDER BY m.created_at ASC`,
     [req.params.conversationId],
@@ -61,7 +65,9 @@ exports.getMessages = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     results: messages.length,
-    data: { messages },
+    data: {
+      messages,
+    },
   });
 });
 
@@ -76,7 +82,9 @@ exports.sendMessage = catchAsync(async (req, res, next) => {
   const conversation = await db.oneOrNone(
     `SELECT id
      FROM chat_conversations
-     WHERE id = $1 AND user_id = $2 AND status = 'open'`,
+     WHERE id = $1
+       AND user_id = $2
+       AND status = 'open'`,
     [req.params.conversationId, req.user.id],
   );
 
@@ -87,8 +95,17 @@ exports.sendMessage = catchAsync(async (req, res, next) => {
   const newMessage = await db.tx(async (t) => {
     const created = await t.one(
       `INSERT INTO chat_messages
-       (conversation_id, sender_id, message)
-       VALUES ($1, $2, $3)
+       (
+         conversation_id,
+         sender_id,
+         message
+       )
+       VALUES
+       (
+         $1,
+         $2,
+         $3
+       )
        RETURNING *`,
       [conversation.id, req.user.id, message.trim()],
     );
@@ -105,7 +122,9 @@ exports.sendMessage = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: "success",
-    data: { message: newMessage },
+    data: {
+      message: newMessage,
+    },
   });
 });
 
@@ -113,8 +132,11 @@ exports.sendMessage = catchAsync(async (req, res, next) => {
 exports.closeConversation = catchAsync(async (req, res, next) => {
   const conversation = await db.oneOrNone(
     `UPDATE chat_conversations
-     SET status = 'closed', updated_at = now()
-     WHERE id = $1 AND user_id = $2
+     SET
+       status = 'closed',
+       updated_at = now()
+     WHERE id = $1
+       AND user_id = $2
      RETURNING *`,
     [req.params.conversationId, req.user.id],
   );
@@ -125,6 +147,8 @@ exports.closeConversation = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    data: { conversation },
+    data: {
+      conversation,
+    },
   });
 });
