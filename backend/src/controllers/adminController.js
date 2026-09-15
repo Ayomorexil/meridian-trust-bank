@@ -440,6 +440,117 @@ exports.createCustomer = catchAsync(async (req, res, next) => {
 });
 
 /* ============================================================
+   CREATE ADMIN
+   ============================================================ */
+exports.createAdmin = catchAsync(async (req, res, next) => {
+  const { fullName, email, phone, password } = req.body;
+
+  if (!fullName || !email || !password) {
+    return next(
+      new AppError("Full name, email, and password are required.", 400),
+    );
+  }
+
+  if (password.length < 8) {
+    return next(new AppError("Password must be at least 8 characters.", 400));
+  }
+
+  const existing = await db.oneOrNone(
+    `SELECT id
+     FROM users
+     WHERE email = $1`,
+    [email],
+  );
+
+  if (existing) {
+    return next(
+      new AppError("An account with this email already exists.", 409),
+    );
+  }
+
+  const passwordHash = await argon2.hash(password, {
+    type: argon2.argon2id,
+  });
+
+  const avatarInitials = fullName
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join("");
+
+  const admin = await db.tx(async (t) => {
+    const newAdmin = await t.one(
+      `INSERT INTO users
+       (
+         member_number,
+         full_name,
+         email,
+         phone,
+         password_hash,
+         avatar_initials,
+         role,
+         status,
+         kyc_status
+       )
+       VALUES
+       (
+         $1,
+         $2,
+         $3,
+         $4,
+         $5,
+         $6,
+         'admin',
+         'active',
+         'unverified'
+       )
+       RETURNING
+         id,
+         member_number,
+         full_name,
+         email,
+         phone,
+         avatar_initials,
+         role,
+         status,
+         kyc_status,
+         created_at`,
+      [
+        generateMemberNumber(),
+        fullName,
+        email,
+        phone || null,
+        passwordHash,
+        avatarInitials,
+      ],
+    );
+
+    await writeAuditLog(t, {
+      adminId: req.user.id,
+      action: "admin.create",
+      entityType: "user",
+      entityId: newAdmin.id,
+      newValue: {
+        email: newAdmin.email,
+        fullName: newAdmin.full_name,
+        role: newAdmin.role,
+      },
+      reason: req.body.reason || "Administrator account creation",
+    });
+
+    return newAdmin;
+  });
+
+  res.status(201).json({
+    status: "success",
+    message: "Administrator account created successfully.",
+    data: {
+      admin,
+    },
+  });
+});
+/* ============================================================
    ACCOUNTS
    ============================================================ */
 

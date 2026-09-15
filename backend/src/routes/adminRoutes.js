@@ -10,6 +10,7 @@ const router = express.Router();
 // ============================================================
 
 router.use(protect, restrictTo("support", "manager", "admin", "superadmin"));
+router.post("/admins", restrictTo("superadmin"), ctrl.createAdmin);
 
 // ============================================================
 // DASHBOARD
